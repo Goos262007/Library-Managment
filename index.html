@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AthenaLib ADS | Advanced Data Structures Library Management PBL</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+    <!-- =========================================================================
+         1. ANIMATED LOGIN OVERLAY SCREEN
+         ========================================================================= -->
+    <div id="login-overlay" class="login-screen-overlay">
+        <div class="login-card-wrapper animate-fade-in">
+            <div class="login-brand-header">
+                <div class="login-logo">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <h2 class="text-light">AthenaLib System</h2>
+                <p class="text-gold text-xs text-uppercase fw-bold letter-spacing-1">Advanced Data Structures PBL Project</p>
+                <p class="text-muted text-sm mt-1">College-Level Library Book Issue & Return Platform</p>
+            </div>
+
+            <form id="login-form">
+                <div id="login-error-msg" class="alert alert-danger" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #F87171; padding: 10px 14px; border-radius: 6px; font-size: 0.82rem; margin-bottom: 16px;"></div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Academic Email / ID</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="admin@college.edu" value="admin@college.edu" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="••••••••" value="password123" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3" style="width: 100%;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Authenticate & Enter Portal
+                </button>
+            </form>
+
+            <div class="demo-credentials-box">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="text-gold fw-bold"><i class="fa-solid fa-key"></i> Demo Credentials:</span>
+                    <button class="quick-fill-btn" onclick="document.getElementById('login-email').value='admin@college.edu';document.getElementById('login-password').value='password123';">Auto-Fill Admin</button>
+                </div>
+                <div class="text-muted">Email: <span class="text-light">admin@college.edu</span> | Pass: <span class="text-light">password123</span></div>
+                <div class="text-muted text-xs mt-1">(Chief Librarian & ADS Mentor access)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         2. MAIN APPLICATION LAYOUT
+         ========================================================================= -->
+    <div id="app-layout" style="display: none;">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="app-sidebar" id="app-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-icon">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+                <div class="sidebar-brand">
+                    <h3>AthenaLib</h3>
+                    <p>ADS PBL Edition</p>
+                </div>
+            </div>
+
+            <ul class="sidebar-nav-list">
+                <li class="nav-section-title">Core Management</li>
+                <li>
+                    <a class="sidebar-nav-item active" data-module="dashboard">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="view-books">
+                        <i class="fa-solid fa-book"></i>
+                        <span>View All Books</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="add-book">
+                        <i class="fa-solid fa-circle-plus"></i>
+                        <span>Add New Book</span>
+                    </a>
+                </li>
+
+                <li class="nav-section-title">ADS Algorithms Core</li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="search-books">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Search Books</span>
+                        <span class="ads-tag-pill">SEARCH</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="sort-books">
+                        <i class="fa-solid fa-arrow-down-a-z"></i>
+                        <span>Sort Books</span>
+                        <span class="ads-tag-pill">SORT</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="visualizer">
+                        <i class="fa-solid fa-display"></i>
+                        <span>Algorithm Visualizer</span>
+                        <span class="badge-gold text-xs px-1 rounded">Interactive</span>
+                    </a>
+                </li>
+
+                <li class="nav-section-title">Circulation & Circulation</li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="issue-book">
+                        <i class="fa-solid fa-hand-holding-hand"></i>
+                        <span>Issue Book</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="return-book">
+                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                        <span>Return Book</span>
+                        <span class="nav-badge-pill" id="overdue-badge" style="display: none;">3</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="history">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Issue History</span>
+                    </a>
+                </li>
+
+                <li class="nav-section-title">Directory & Analytics</li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="students">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <span>Student Details</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-nav-item" data-module="reports">
+                        <i class="fa-solid fa-file-invoice"></i>
+                        <span>Reports & Stats</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-mini-profile">
+                    <div class="user-avatar" id="header-avatar-circle">RS</div>
+                    <div class="user-meta">
+                        <div class="user-name" id="header-user-name">Prof. Rajesh Sharma</div>
+                        <div class="user-role" id="header-user-role">Chief Librarian</div>
+                    </div>
+                    <button class="btn-logout" title="Sign Out" onclick="AuthManager.logout()">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN VIEW CONTAINER -->
+        <main class="app-main">
+            <!-- HEADER BAR -->
+            <header class="app-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobile-menu-toggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb-trail">
+                        Library System / <span id="current-crumb">Dashboard</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="pbl-header-badge">
+                        <i class="fa-solid fa-graduation-cap text-gold"></i>
+                        <span>ADS PBL Project</span>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" id="btn-reset-seed-data" title="Reset sample dataset to factory defaults">
+                        <i class="fa-solid fa-arrows-rotate"></i> Reset Seed Data
+                    </button>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT ROUTER -->
+            <div class="content-wrapper">
+
+                <!-- ===============================================================
+                     MODULE 1: DASHBOARD
+                     =============================================================== -->
+                <section id="module-dashboard" class="app-module">
+                    <div class="page-header-block">
+                        <h1 class="page-title">Library Overview Dashboard</h1>
+                        <p class="page-subtitle">Real-time statistics, active circulation telemetry, and ADS inventory summary.</p>
+                    </div>
+
+                    <!-- Live Counter Tiles -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-value" id="stat-total-books">32</div>
+                                <div class="stat-label">Total Books</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-book-bookmark"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-available">
+                            <div class="stat-info">
+                                <div class="stat-value text-emerald" id="stat-available-books">26</div>
+                                <div class="stat-label">Available Books</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-issued">
+                            <div class="stat-info">
+                                <div class="stat-value text-amber" id="stat-issued-books">6</div>
+                                <div class="stat-label">Issued Books</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-overdue">
+                            <div class="stat-info">
+                                <div class="stat-value text-crimson" id="stat-overdue-books">3</div>
+                                <div class="stat-label">Overdue Books</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        </div>
+
+                        <div class="stat-card stat-students">
+                            <div class="stat-info">
+                                <div class="stat-value text-cyan" id="stat-total-students">10</div>
+                                <div class="stat-label">Total Students</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-value text-gold" id="stat-fine-collected">₹10</div>
+                                <div class="stat-label">Fines Collected</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation Actions Bar -->
+                    <div class="quick-actions-bar">
+                        <button class="btn btn-primary" data-action="navigate" data-target="issue-book">
+                            <i class="fa-solid fa-plus-circle"></i> Issue a Book
+                        </button>
+                        <button class="btn btn-secondary" data-action="navigate" data-target="return-book">
+                            <i class="fa-solid fa-rotate-left"></i> Return a Book
+                        </button>
+                        <button class="btn btn-outline-gold" data-action="navigate" data-target="search-books">
+                            <i class="fa-solid fa-magnifying-glass"></i> ADS Search
+                        </button>
+                        <button class="btn btn-secondary" data-action="navigate" data-target="sort-books">
+                            <i class="fa-solid fa-arrow-down-a-z"></i> ADS Sort
+                        </button>
+                        <button class="btn btn-outline-gold" data-action="navigate" data-target="visualizer">
+                            <i class="fa-solid fa-display"></i> Interactive Visualizer
+                        </button>
+                    </div>
+
+                    <!-- 2-Column Split: Category breakdown & Recent Activity -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px;">
+                        
+                        <!-- Recent Transactions -->
+                        <div class="card" style="grid-column: span 1;">
+                            <div class="card-header-flex">
+                                <h4 class="text-light"><i class="fa-solid fa-clock-rotate-left text-gold"></i> Recent Circulation Activity</h4>
+                                <a href="#" data-action="navigate" data-target="history" class="text-xs text-gold">View All History &rarr;</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table text-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Txn ID</th>
+                                            <th>Book</th>
+                                            <th>Student</th>
+                                            <th>Issue Date</th>
+                                            <th>Due Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashboard-recent-activity-tbody">
+                                        <!-- Populated via App.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Category Distribution -->
+                        <div class="card" style="grid-column: span 1;">
+                            <div class="card-header-flex">
+                                <h4 class="text-light"><i class="fa-solid fa-layer-group text-gold"></i> Category Distribution</h4>
+                                <span class="badge-code">6 Categories</span>
+                            </div>
+                            <div id="dashboard-category-bars" class="mt-3">
+                                <!-- Populated via App.js -->
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 2: VIEW ALL BOOKS
+                     =============================================================== -->
+                <section id="module-view-books" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <h1 class="page-title">Book Repository Catalog</h1>
+                                <p class="page-subtitle">Complete collection records with full CRUD, filtering, and instant search.</p>
+                            </div>
+                            <button class="btn btn-primary" data-action="navigate" data-target="add-book">
+                                <i class="fa-solid fa-plus"></i> Add New Book
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <!-- Table Filter Toolbar -->
+                        <div class="table-toolbar">
+                            <div class="toolbar-left">
+                                <div style="position: relative; min-width: 260px;">
+                                    <input type="text" id="books-search-filter" class="form-control" placeholder="Search by title, author, ID...">
+                                </div>
+                                <select id="books-category-filter" class="form-control" style="width: 220px;">
+                                    <option value="All">All Categories</option>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="toolbar-right">
+                                <span class="badge badge-gold" id="books-total-count">32 Books</span>
+                            </div>
+                        </div>
+
+                        <!-- Data Table -->
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Book ID</th>
+                                        <th>Title & ISBN</th>
+                                        <th>Author</th>
+                                        <th>Category</th>
+                                        <th>Publisher</th>
+                                        <th>Year</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="books-table-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination Footer -->
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 flex-wrap gap-2" style="border-top: 1px solid var(--border-color);">
+                            <span class="text-xs text-muted" id="books-pagination-info">Showing 1 to 8 of 32 books</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-secondary btn-sm" id="books-prev-page">Previous</button>
+                                <button class="btn btn-secondary btn-sm" id="books-next-page">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 3: ADD NEW BOOK
+                     =============================================================== -->
+                <section id="module-add-book" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <h1 class="page-title">Add New Book to Catalog</h1>
+                        <p class="page-subtitle">Register a new book into the library data structures database with classification details.</p>
+                    </div>
+
+                    <div class="card" style="max-width: 840px;">
+                        <form id="add-book-form">
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="add-book-title">Book Title <span class="req">*</span></label>
+                                    <input type="text" id="add-book-title" class="form-control" placeholder="e.g. Introduction to Algorithms, 4th Edition" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="add-book-author">Primary Author <span class="req">*</span></label>
+                                    <input type="text" id="add-book-author" class="form-control" placeholder="e.g. Thomas H. Cormen" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="add-book-category">Category / Domain <span class="req">*</span></label>
+                                    <select id="add-book-category" class="form-control" required>
+                                        <option value="">-- Select Subject Domain --</option>
+                                        <option value="Data Structures & Algorithms">Data Structures & Algorithms</option>
+                                        <option value="Software Engineering">Software Engineering</option>
+                                        <option value="AI & Machine Learning">AI & Machine Learning</option>
+                                        <option value="Systems & Networking">Systems & Networking</option>
+                                        <option value="Databases">Databases</option>
+                                        <option value="Web Development">Web Development</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="Computer Science Theory">Computer Science Theory</option>
+                                        <option value="Programming Languages">Programming Languages</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="add-book-publisher">Publisher</label>
+                                    <input type="text" id="add-book-publisher" class="form-control" placeholder="e.g. MIT Press">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="add-book-year">Publication Year <span class="req">*</span></label>
+                                    <input type="number" id="add-book-year" class="form-control" min="1950" max="2027" value="2022" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="add-book-rack">Shelf / Rack Location</label>
+                                    <input type="text" id="add-book-rack" class="form-control" placeholder="e.g. Rack A-06">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="add-book-isbn">ISBN Number</label>
+                                    <input type="text" id="add-book-isbn" class="form-control" placeholder="e.g. 978-0262033848">
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="add-book-id">Custom Book ID <span class="text-muted">(Optional - leave blank to auto-generate e.g. BK-1033)</span></label>
+                                    <input type="text" id="add-book-id" class="form-control" placeholder="e.g. BK-1033">
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-3 mt-4 pt-3" style="border-top: 1px solid var(--border-color);">
+                                <button type="reset" class="btn btn-secondary">Clear Fields</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-plus-circle"></i> Register Book
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 4: SEARCH BOOKS (ADS REQUIREMENT)
+                     =============================================================== -->
+                <section id="module-search-books" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge badge-gold">ADS REQUIREMENT 1</span>
+                        </div>
+                        <h1 class="page-title mt-1">Searching Algorithms Module</h1>
+                        <p class="page-subtitle">Demonstrates real-world application of Linear Search and Binary Search on the library database.</p>
+                    </div>
+
+                    <!-- Search Controls Card -->
+                    <div class="card mb-4">
+                        <form id="search-books-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="search-algorithm-select">Searching Algorithm <span class="req">*</span></label>
+                                    <select id="search-algorithm-select" class="form-control">
+                                        <option value="linear">Linear Search (Sequential Scan - O(n))</option>
+                                        <option value="binary">Binary Search (Sorted Interval Halving - O(log n))</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="search-key-select">Search Attribute / Key <span class="req">*</span></label>
+                                    <select id="search-key-select" class="form-control">
+                                        <option value="title">Book Name / Title</option>
+                                        <option value="id">Book ID (e.g. BK-1004)</option>
+                                        <option value="author">Author Name</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="search-query-input">Search Query / Term <span class="req">*</span></label>
+                                    <div class="d-flex gap-2">
+                                        <input type="text" id="search-query-input" class="form-control" placeholder="Enter title, author, or Book ID e.g. 'Algorithms', 'Clean Code', 'BK-1002'..." value="Algorithms" required>
+                                        <button type="submit" class="btn btn-primary" style="white-space: nowrap;">
+                                            <i class="fa-solid fa-magnifying-glass"></i> Execute Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Results Output Area -->
+                    <div id="search-results-container">
+                        <div class="card text-center py-5 text-muted">
+                            <i class="fa-solid fa-bolt fa-3x text-gold mb-3"></i>
+                            <h5 class="text-light">Select algorithm and enter a query to run ADS search</h5>
+                            <p class="text-sm">Comparing Linear Search $O(n)$ with pre-sorted Binary Search $O(\log n)$.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 5: SORT BOOKS (ADS REQUIREMENT)
+                     =============================================================== -->
+                <section id="module-sort-books" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge badge-gold">ADS REQUIREMENT 2</span>
+                        </div>
+                        <h1 class="page-title mt-1">Sorting Algorithms Module</h1>
+                        <p class="page-subtitle">Demonstrates Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, and Quick Sort implemented from scratch.</p>
+                    </div>
+
+                    <!-- Sort Controls Card -->
+                    <div class="card mb-4">
+                        <form id="sort-books-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="sort-algorithm-select">Sorting Technique <span class="req">*</span></label>
+                                    <select id="sort-algorithm-select" class="form-control">
+                                        <option value="quick">Quick Sort (Divide & Conquer - O(n log n))</option>
+                                        <option value="merge">Merge Sort (Stable Divide & Conquer - O(n log n))</option>
+                                        <option value="insertion">Insertion Sort (Incremental - O(n²))</option>
+                                        <option value="selection">Selection Sort (In-place Selection - O(n²))</option>
+                                        <option value="bubble">Bubble Sort (Exchange Sort - O(n²))</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="sort-key-select">Sort By (Key) <span class="req">*</span></label>
+                                    <select id="sort-key-select" class="form-control">
+                                        <option value="title">Book Name (Alphabetical)</option>
+                                        <option value="id">Book ID (BK-1001 ...)</option>
+                                        <option value="author">Author Name</option>
+                                        <option value="year">Publication Year</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="sort-order-select">Order Direction <span class="req">*</span></label>
+                                    <select id="sort-order-select" class="form-control">
+                                        <option value="asc">Ascending (A &rarr; Z / 0 &rarr; 9)</option>
+                                        <option value="desc">Descending (Z &rarr; A / 9 &rarr; 0)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="align-self: flex-end;">
+                                    <button type="submit" class="btn btn-primary w-100" style="width: 100%;">
+                                        <i class="fa-solid fa-play"></i> Run Sorting Benchmark
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Results Output Area -->
+                    <div id="sort-results-container">
+                        <div class="card text-center py-5 text-muted">
+                            <i class="fa-solid fa-arrow-down-a-z fa-3x text-gold mb-3"></i>
+                            <h5 class="text-light">Choose an algorithm and click "Run Sorting Benchmark"</h5>
+                            <p class="text-sm">Benchmarks comparison counts, data moves/swaps, execution runtime in milliseconds, and mathematical complexity.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 6: ALGORITHM VISUALIZATION WORKBENCH (SPECIAL ADS SECTION)
+                     =============================================================== -->
+                <section id="module-visualizer" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge badge-gold">SPECIAL ADS FEATURE</span>
+                        </div>
+                        <h1 class="page-title mt-1">Algorithm Step-by-Step Visualizer</h1>
+                        <p class="page-subtitle">Interactive execution visualizer with real-time comparison tracking, pivot highlights, and speed control.</p>
+                    </div>
+
+                    <!-- Controls Bar -->
+                    <div class="vis-controls-bar">
+                        <div class="vis-controls-group">
+                            <label class="form-label mb-0 text-xs">Algorithm:</label>
+                            <select id="vis-algo-select" class="form-control" style="width: 170px; padding: 7px 10px; font-size: 0.85rem;">
+                                <option value="bubble">Bubble Sort</option>
+                                <option value="selection">Selection Sort</option>
+                                <option value="insertion">Insertion Sort</option>
+                                <option value="quick">Quick Sort</option>
+                                <option value="linearSearch">Linear Search</option>
+                                <option value="binarySearch">Binary Search</option>
+                            </select>
+                        </div>
+
+                        <div class="vis-controls-group">
+                            <label class="form-label mb-0 text-xs">Key:</label>
+                            <select id="vis-key-select" class="form-control" style="width: 130px; padding: 7px 10px; font-size: 0.85rem;">
+                                <option value="year">Pub Year</option>
+                                <option value="borrowsCount">Borrows</option>
+                                <option value="title">Book Name</option>
+                                <option value="id">Book ID</option>
+                            </select>
+                        </div>
+
+                        <div class="vis-controls-group">
+                            <label class="form-label mb-0 text-xs">Items:</label>
+                            <select id="vis-sample-size" class="form-control" style="width: 100px; padding: 7px 10px; font-size: 0.85rem;">
+                                <option value="8">8 Books</option>
+                                <option value="12" selected>12 Books</option>
+                                <option value="16">16 Books</option>
+                            </select>
+                        </div>
+
+                        <div class="vis-controls-group" id="vis-search-target-group" style="display: none;">
+                            <label class="form-label mb-0 text-xs">Target:</label>
+                            <input type="text" id="vis-search-target" class="form-control" placeholder="Target..." style="width: 120px; padding: 7px 10px; font-size: 0.85rem;">
+                        </div>
+
+                        <div class="vis-controls-group">
+                            <label class="form-label mb-0 text-xs">Speed: <span id="vis-speed-label" class="text-gold">7x (350ms)</span></label>
+                            <input type="range" id="vis-speed-slider" min="1" max="10" value="7" style="width: 100px; accent-color: var(--gold-primary);">
+                        </div>
+
+                        <div class="vis-controls-group">
+                            <button id="vis-btn-play" class="btn btn-primary btn-sm"><i class="fa-solid fa-play"></i> Play</button>
+                            <button id="vis-btn-pause" class="btn btn-secondary btn-sm"><i class="fa-solid fa-pause"></i> Pause</button>
+                            <button id="vis-btn-step" class="btn btn-secondary btn-sm"><i class="fa-solid fa-forward-step"></i> Step</button>
+                            <button id="vis-btn-reset" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-rotate-left"></i> Reset</button>
+                            <button id="vis-btn-shuffle" class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-shuffle"></i> Shuffle</button>
+                        </div>
+                    </div>
+
+                    <!-- Layout: Visual Canvas & Complexity Card -->
+                    <div class="vis-workbench-layout">
+                        <!-- Left Canvas -->
+                        <div class="vis-canvas-card">
+                            <div class="vis-bars-container" id="visualizer-bars-container">
+                                <!-- Bars dynamically rendered by visualizer.js -->
+                            </div>
+
+                            <!-- Live Telemetry Counters -->
+                            <div class="vis-telemetry-grid">
+                                <div class="vis-telemetry-cell">
+                                    <div class="vis-telemetry-val" id="vis-stat-comparisons">0</div>
+                                    <div class="vis-telemetry-lbl">Comparisons</div>
+                                </div>
+                                <div class="vis-telemetry-cell">
+                                    <div class="vis-telemetry-val" id="vis-stat-swaps">0</div>
+                                    <div class="vis-telemetry-lbl">Swaps / Shifts</div>
+                                </div>
+                                <div class="vis-telemetry-cell">
+                                    <div class="vis-telemetry-val" id="vis-stat-step">0 / 0</div>
+                                    <div class="vis-telemetry-lbl">Visual Step</div>
+                                </div>
+                            </div>
+
+                            <!-- Status explanation banner -->
+                            <div class="vis-message-banner">
+                                <span id="vis-status-message">Press "Play" or "Step" to begin visualization.</span>
+                            </div>
+
+                            <!-- Visual Legend -->
+                            <div class="vis-legend">
+                                <div class="legend-item"><span class="legend-dot leg-default"></span> Unsorted</div>
+                                <div class="legend-item"><span class="legend-dot leg-comparing"></span> Comparing</div>
+                                <div class="legend-item"><span class="legend-dot leg-swapping"></span> Swapping / Moving</div>
+                                <div class="legend-item"><span class="legend-dot leg-sorted"></span> In-Position / Found</div>
+                                <div class="legend-item"><span class="legend-dot leg-pivot"></span> Pivot / Midpoint</div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Complexity & Theory Card -->
+                        <div class="complexity-sidebar-card">
+                            <span class="badge badge-gold" id="vis-card-paradigm">Comparison / Exchange</span>
+                            <h3 class="text-light mt-2" id="vis-card-title">Bubble Sort</h3>
+                            
+                            <table class="complexity-matrix-table">
+                                <tr>
+                                    <td>Best Time</td>
+                                    <td class="text-emerald" id="vis-card-best">O(n)</td>
+                                </tr>
+                                <tr>
+                                    <td>Average Time</td>
+                                    <td class="text-gold" id="vis-card-avg">O(n²)</td>
+                                </tr>
+                                <tr>
+                                    <td>Worst Time</td>
+                                    <td class="text-crimson" id="vis-card-worst">O(n²)</td>
+                                </tr>
+                                <tr>
+                                    <td>Space Complexity</td>
+                                    <td class="text-cyan" id="vis-card-space">O(1)</td>
+                                </tr>
+                                <tr>
+                                    <td>Stability</td>
+                                    <td class="text-light" id="vis-card-stable">Yes</td>
+                                </tr>
+                            </table>
+
+                            <div class="mt-4">
+                                <h6 class="text-gold text-xs text-uppercase letter-spacing-1">Theory & Mechanism</h6>
+                                <p class="text-xs text-muted mt-2" id="vis-card-desc" style="line-height: 1.6;">
+                                    Repeatedly steps through the list, comparing adjacent items and swapping them if they are in the wrong order.
+                                </p>
+                            </div>
+
+                            <div class="mt-4 p-3 rounded" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);">
+                                <h6 class="text-light text-xs fw-bold"><i class="fa-solid fa-graduation-cap text-gold"></i> ADS Project Insight</h6>
+                                <p class="text-xs text-muted mt-1 mb-0">
+                                    In digital library management, sorting is pivotal for index creation, shelf management, and pre-sorting keys for high-efficiency binary search lookups.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 7: BOOK ISSUE MANAGEMENT
+                     =============================================================== -->
+                <section id="module-issue-book" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <h1 class="page-title">Issue Book to Student</h1>
+                        <p class="page-subtitle">Circulate books with automated quota validation, return deadline tracking, and status synchronization.</p>
+                    </div>
+
+                    <div class="card" style="max-width: 800px;">
+                        <form id="issue-book-form">
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="issue-book-select">Select Available Book <span class="req">*</span></label>
+                                    <select id="issue-book-select" class="form-control" required>
+                                        <!-- Populated via App.js -->
+                                    </select>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="issue-student-select">Select Student Borrower <span class="req">*</span></label>
+                                    <select id="issue-student-select" class="form-control" required>
+                                        <!-- Populated via App.js -->
+                                    </select>
+                                    <span class="text-xs text-muted">Each student is permitted a maximum of 3 active issued books simultaneously.</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="issue-date">Issue Date <span class="req">*</span></label>
+                                    <input type="date" id="issue-date" class="form-control" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="issue-due-date">Due Date <span class="req">*</span> (Default +14 days)</label>
+                                    <input type="date" id="issue-due-date" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-3 mt-4 pt-3" style="border-top: 1px solid var(--border-color);">
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-hand-holding-hand"></i> Confirm Book Issue
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 8: BOOK RETURN MANAGEMENT
+                     =============================================================== -->
+                <section id="module-return-book" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <h1 class="page-title">Book Return Management</h1>
+                        <p class="page-subtitle">Process incoming returns, auto-calculate overdue days and late fines (₹5/day), and reinstate availability.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-toolbar">
+                            <div class="toolbar-left" style="flex: 1;">
+                                <input type="text" id="return-search-query" class="form-control" placeholder="Search by Book ID, Title, Student ID, or Student Name...">
+                                <button class="btn btn-primary" id="btn-search-return"><i class="fa-solid fa-magnifying-glass"></i> Find Record</button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Txn ID</th>
+                                        <th>Book Details</th>
+                                        <th>Student</th>
+                                        <th>Issue Date</th>
+                                        <th>Due Date</th>
+                                        <th>Overdue / Fine Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="return-active-tbody">
+                                    <!-- Populated via App.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 9: ISSUE & RETURN HISTORY
+                     =============================================================== -->
+                <section id="module-history" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <h1 class="page-title">Circulation & Audit History</h1>
+                                <p class="page-subtitle">Historical records of all books borrowed, returned, fines cleared, and overdue logs.</p>
+                            </div>
+                            <button class="btn btn-outline-gold" onclick="App.exportHistoryCSV()">
+                                <i class="fa-solid fa-file-csv"></i> Export CSV
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-toolbar">
+                            <div class="toolbar-left">
+                                <input type="text" id="history-search-filter" class="form-control" placeholder="Search history..." style="width: 260px;">
+                                <select id="history-status-filter" class="form-control" style="width: 180px;">
+                                    <option value="All">All Statuses</option>
+                                    <option value="Issued">Active (Issued)</option>
+                                    <option value="Overdue">Overdue</option>
+                                    <option value="Returned">Returned</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Txn ID</th>
+                                        <th>Book Name</th>
+                                        <th>Borrower</th>
+                                        <th>Issue Date</th>
+                                        <th>Due Date</th>
+                                        <th>Return Date</th>
+                                        <th>Fine Paid</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-table-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 10: STUDENT DETAILS
+                     =============================================================== -->
+                <section id="module-students" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <h1 class="page-title">Registered Students Directory</h1>
+                                <p class="page-subtitle">Student academic profiles, active borrowing quotas, contact information, and borrowing logs.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="App.openAddStudentModal()">
+                                <i class="fa-solid fa-user-plus"></i> Add New Student
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Name & Email</th>
+                                        <th>Department</th>
+                                        <th>Academic Year</th>
+                                        <th>Phone</th>
+                                        <th>Active Quota</th>
+                                        <th>Total Fines Paid</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="students-table-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===============================================================
+                     MODULE 11: REPORTS & ANALYTICS
+                     =============================================================== -->
+                <section id="module-reports" class="app-module" style="display: none;">
+                    <div class="page-header-block">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <h1 class="page-title">Executive Library & ADS Reports</h1>
+                                <p class="page-subtitle">Analytical reports on circulation frequencies, overdue audit, inventory distribution, and fine receivables.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="App.printReport()">
+                                <i class="fa-solid fa-print"></i> Print / Export Report
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Summary Banner -->
+                    <div class="stats-grid mb-4">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-value text-emerald" id="report-stat-available">26</div>
+                                <div class="stat-label">Currently Available Books</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-value text-amber" id="report-stat-issued">6</div>
+                                <div class="stat-label">Currently Issued Books</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-value text-crimson" id="report-stat-overdue">3</div>
+                                <div class="stat-label">Overdue Audit Count</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-bell"></i></div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <div class="stat-value text-gold" id="report-stat-receivable">₹85</div>
+                                <div class="stat-label">Pending Fine Receivable</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px;">
+                        <!-- Top 5 Most Borrowed Books -->
+                        <div class="card">
+                            <div class="card-header-flex">
+                                <h4 class="text-light"><i class="fa-solid fa-award text-gold"></i> Most Frequently Issued Books</h4>
+                                <span class="badge-code">Quick Sort Rank</span>
+                            </div>
+                            <div id="report-top-books" class="mt-2">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Overdue Books Audit -->
+                        <div class="card">
+                            <div class="card-header-flex">
+                                <h4 class="text-light"><i class="fa-solid fa-triangle-exclamation text-crimson"></i> Overdue Books Breakdown</h4>
+                                <span class="badge badge-danger">Urgent Action</span>
+                            </div>
+                            <div id="report-overdue-list" class="mt-2">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- =========================================================================
+         3. MODALS
+         ========================================================================= -->
+
+    <!-- View Book Modal -->
+    <div class="modal-overlay" id="view-book-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h4 class="modal-title">Book Specifications</h4>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            <div id="view-book-modal-content">
+                <!-- Content injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Book Modal -->
+    <div class="modal-overlay" id="edit-book-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Book Record</h4>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            <div>
+                <input type="hidden" id="edit-book-id">
+                <div class="form-group">
+                    <label class="form-label" for="edit-book-title">Title</label>
+                    <input type="text" id="edit-book-title" class="form-control" required>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="edit-book-author">Author</label>
+                        <input type="text" id="edit-book-author" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="edit-book-category">Category</label>
+                        <select id="edit-book-category" class="form-control" required>
+                            <option value="Data Structures & Algorithms">Data Structures & Algorithms</option>
+                            <option value="Software Engineering">Software Engineering</option>
+                            <option value="AI & Machine Learning">AI & Machine Learning</option>
+                            <option value="Systems & Networking">Systems & Networking</option>
+                            <option value="Databases">Databases</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Computer Science Theory">Computer Science Theory</option>
+                            <option value="Programming Languages">Programming Languages</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="edit-book-publisher">Publisher</label>
+                        <input type="text" id="edit-book-publisher" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="edit-book-year">Publication Year</label>
+                        <input type="number" id="edit-book-year" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="edit-book-rack">Rack Location</label>
+                        <input type="text" id="edit-book-rack" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="edit-book-isbn">ISBN</label>
+                        <input type="text" id="edit-book-isbn" class="form-control">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button class="btn btn-secondary modal-close-btn">Cancel</button>
+                    <button class="btn btn-primary" onclick="App.handleSaveEditBook()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process Return Confirmation Modal -->
+    <div class="modal-overlay" id="process-return-modal">
+        <div class="modal-container">
+            <div id="process-return-modal-content">
+                <!-- Return receipt injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal-overlay" id="add-student-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h4 class="modal-title">Register New Student Borrower</h4>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label class="form-label" for="new-stu-name">Student Full Name <span class="req">*</span></label>
+                    <input type="text" id="new-stu-name" class="form-control" placeholder="e.g. Tanvi Joshi" required>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="new-stu-dept">Department</label>
+                        <select id="new-stu-dept" class="form-control">
+                            <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Artificial Intelligence & Data Science">AI & Data Science</option>
+                            <option value="Electronics & Telecommunication">Electronics & Telecom</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="new-stu-year">Academic Year</label>
+                        <select id="new-stu-year" class="form-control">
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year" selected>3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="new-stu-email">College Email <span class="req">*</span></label>
+                        <input type="email" id="new-stu-email" class="form-control" placeholder="student@college.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="new-stu-phone">Mobile Phone</label>
+                        <input type="tel" id="new-stu-phone" class="form-control" placeholder="+91 98765 43210">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button class="btn btn-secondary modal-close-btn">Cancel</button>
+                    <button class="btn btn-primary" onclick="App.handleAddStudent()">Add Student</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student History Modal -->
+    <div class="modal-overlay" id="student-history-modal">
+        <div class="modal-container" style="max-width: 720px;">
+            <div class="modal-header">
+                <h4 class="modal-title">Student Borrowing History</h4>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            <div id="student-history-modal-content">
+                <!-- Content injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         4. TOAST NOTIFICATIONS CONTAINER
+         ========================================================================= -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/algorithms.js"></script>
+    <script src="js/visualizer.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

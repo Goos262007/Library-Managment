@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Library ADS PBL System - Keyframe Animations & Transitions
+   Smooth transitions, pulse, slide-ins, and micro-interactions
+   ========================================================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.95);
+    }
+}
+
+@keyframes pulseGold {
+    0% {
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 22px rgba(212, 175, 55, 0.8);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -468px 0;
+    }
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+/* Animation Helper Classes */
+.animate-fade-in {
+    animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in {
+    animation: slideInRight 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-out {
+    animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.animate-pulse-gold {
+    animation: pulseGold 1.5s infinite alternate;
+}
+
+/* Skeleton loader for shimmer states */
+.skeleton {
+    background: #112240;
+    background-image: linear-gradient(
+        to right,
+        #112240 0%,
+        #1B305B 20%,
+        #112240 40%,
+        #112240 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 800px 104px;
+    animation: shimmer 1.2s linear infinite forwards;
+    border-radius: 4px;
+}
